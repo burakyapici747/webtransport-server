@@ -1,0 +1,25 @@
+{
+  "name": "webtransport-server",
+  "version": "0.0.1",
+  "description": "Socket.IO with WebTransport",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burakyapici747/webtransport-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/burakyapici747/webtransport-server/issues"
+  },
+  "homepage": "https://github.com/burakyapici747/webtransport-server#readme",
+  "dependencies": {
+    "@fails-components/webtransport": "^1.1.4",
+    "@fails-components/webtransport-transport-http3-quiche": "^1.1.4",
+    "socket.io": "^4.8.1"
+  }
+}
