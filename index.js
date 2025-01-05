@@ -14,32 +14,23 @@ const COLORS = [
 const players = new Map();
 const availableColors = [...COLORS];
 
-const key = await readFile("./key.pem");
+const key = await readFile("./privkey.pem");
 const cert = await readFile("./cert.pem");
+const options = {key,cert};
 
-const httpsServer = createServer({
-  key,
-  cert
-}, async (req, res) => {
-  if (req.method === "GET" && req.url === "/") {
-    const content = await readFile("./index.html");
-    res.writeHead(200, {
-      "content-type": "text/html"
-    });
-    res.write(content);
-    res.end();
-  } else {
-    res.writeHead(404).end();
-  }
-});
+const httpsServer = createServer(options);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 httpsServer.listen(port, () => {
   console.log(`server listening at https://localhost:${port}`);
 });
 
 const io = new Server(httpsServer, {
+  cors: {
+    origin: "https://gamemagma.live",
+    methods: ["GET", "POST"]
+  },
   transports: ["polling", "websocket", "webtransport"]
 });
 
@@ -57,6 +48,11 @@ function returnColorToPool(color) {
 
 io.on("connection", (socket) => {
   console.log(`connected with transport ${socket.conn.transport.name}`);
+
+  // Handle ping
+  socket.on('ping', () => {
+    socket.emit('pong');
+  });
 
   socket.on("player:join", (username) => {
     const playerColor = getRandomColor();
