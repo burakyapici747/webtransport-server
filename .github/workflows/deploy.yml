@@ -1,0 +1,30 @@
+name: Deploy WebTransport Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Copy SSL files
+        run: |
+          echo "${{ secrets.CERT_PEM }}" > cert.pem
+          echo "${{ secrets.FULLCHAIN_PEM }}" > fullchain.pem
+          echo "${{ secrets.PRIVKEY_PEM }}" > privkey.pem
+
+      - name: Deploy to VDS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VDS_HOST }}
+          username: ${{ secrets.VDS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/webtransport-server
+            git pull origin main
+            docker-compose down
+            docker-compose build
+            docker-compose up -d 

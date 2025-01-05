@@ -5,7 +5,7 @@
     <title>Socket.IO WebTransport example</title>
   </head>
   <body>
-    <p>Status: <span id="status">Disconnected</span></p>
+    <p>Statuss: <span id="status">Disconnected</span></p>
     <p>Transport: <span id="transport">N/A</span></p>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -16,7 +16,7 @@
       const socket = io({
         transportOptions: {
           webtransport: {
-            hostname: "127.0.0.1"
+            hostname: "https:gamemagma.live:3001"
           }
         }
       });
